@@ -15,8 +15,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env_list = open(os.path.join(BASE_DIR,'.env'))
-while true:
+env_list = dict()
+local_env = open(os.path.join(BASE_DIR,'.env'))
+while True:
     line=local_env.readline()
     if not line:
         break
@@ -30,7 +31,7 @@ while true:
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env_list['SECRETY_KEY']
+SECRET_KEY = env_list['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
