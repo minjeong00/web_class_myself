@@ -1,7 +1,42 @@
 version: "3.7"
 services:
-  django:
-    image: gis_web_application:1
-    ports:
-    - 8080:8000
 
+  nginx:
+    image: nginx:1.19.5
+    ports:
+      - 80:80
+    networks:
+      - gis_web_network
+    volumes:
+      - /home/ubuntu/nginx.conf:/etc/nginx/nginx.conf
+      - gis_web_application_static:/data/static/
+      - gis_web_application_media:/data/media/
+
+  django:
+    image: gis_web_application:4
+    networks:
+      - gis_web_network
+    volumes:
+    - gis_web_application_static:/home/web_class/staticfiles/
+    - gis_web_application_media:/home/web_class/media/
+
+  mariadb:
+    image: mariadb:10.5
+    networks:
+      - gis_web_network
+    volumes:
+      - gis_mariadb:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: password1234
+      MARIADB_DATABASE: django
+      MARIADB_USER: django
+      MARIADB_PASSWORD: password1234
+
+
+networks:
+  gis_web_network:
+
+volumes:
+  gis_web_application_static:
+  gis_web_application_media:
+  gis_mariadb:
