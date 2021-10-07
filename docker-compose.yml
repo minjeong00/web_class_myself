@@ -15,6 +15,16 @@ services:
       - gis_web_application_static:/data/static/
       - gis_web_application_media:/data/media/
       - gis_log:/var/log/nginx/
+    secrets:
+      - NGINX_AUTH
+
+  goaccess:
+    image: allinurl/goaccess:1.5.1
+    ports:
+    - 7890:7890
+    volumes:
+    - gis_log:/var/log/nginx/
+    command: /var/log/nginx/gis_access.log -o /var/log/nginx/report.html --real-time-html --log-format COMBINED
 
   django:
     image: gis_web_application:5
@@ -62,4 +72,6 @@ secrets:
   MARIADB_USER:
     external: true
   MARIADB_PASSWORD:
+    external: true
+  NGINX_AUTH:
     external: true
